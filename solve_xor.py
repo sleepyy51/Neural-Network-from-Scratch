@@ -3,14 +3,14 @@ from activations import Tanh
 from losses import mse, mse_prime
 import numpy as np
 
-X = np.reshape([[0, 0], [0, 1], [1, 0], [1, 1]], (4, 1, 1))
-Y = np.reshape([[0], [1], [1], [1]], (4, 1, 1))
+X = np.reshape([[0, 0], [0, 1], [1, 0], [1, 1]], (4, 2, 1))
+Y = np.reshape([[0], [1], [1], [0]], (4, 1, 1))
 
 network = [
     Dense(2, 3),
     Tanh(),
-    Dense(3,1),
-    Tanh
+    Dense(3, 1),
+    Tanh()
 ]
 
 epochs = 10000
@@ -30,7 +30,7 @@ for e in range(epochs):
         # Backward
         grad = mse_prime(y, output)
         for layer in reversed(network):
-            grad += layer.backward(grad, learning_rate)
+            grad = layer.backward(grad, learning_rate)
         
     error /= len(x)
     print('%d/%d, error =%f' % (e * 1, epochs, error))
